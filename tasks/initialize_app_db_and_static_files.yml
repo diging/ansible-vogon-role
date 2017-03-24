@@ -1,0 +1,24 @@
+- name: populate static files
+  shell: source /var/opt/wsgi/vogon-web/env_secrets && /var/opt/wsgi/vogon-web/env/bin/python manage.py collectstatic --no-input
+  args:
+    chdir: /var/opt/wsgi/vogon-web/vogon-web
+  become: yes
+  become_user: vogon-web
+- name: migrate database
+  shell: source /var/opt/wsgi/vogon-web/env_secrets && /var/opt/wsgi/vogon-web/env/bin/python manage.py migrate
+  args:
+    chdir: /var/opt/wsgi/vogon-web/vogon-web
+  become: yes
+  become_user: vogon-web
+- name: pre-populate schemas
+  shell: source /var/opt/wsgi/vogon-web/env_secrets && /var/opt/wsgi/vogon-web/env/bin/python manage.py load_schemas
+  args:
+    chdir: /var/opt/wsgi/vogon-web/vogon-web
+  become: yes
+  become_user: vogon-web
+- name: create superuser in vogon-web
+  shell: source /var/opt/wsgi/vogon-web/env_secrets && echo "from django.contrib.auth.models import User; User.objects.filter(email='{{ django_admin_email}}').count() < 1 and User.objects.create_superuser('{{ django_admin_user }}', '{{ django_admin_email }}', '{{ django_admin_password }}')" | /var/opt/wsgi/vogon-web/env/bin/python manage.py shell
+  args:
+    chdir: /var/opt/wsgi/vogon-web/vogon-web
+  become: yes
+  become_user: vogon-web

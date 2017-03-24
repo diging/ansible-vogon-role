@@ -1,0 +1,15 @@
+- name: copy locations config for nginx
+  template:
+    src: vogon_locations.conf.j2
+    dest: /etc/nginx/conf.d/vogon_locations.conf
+  become: yes
+- name: copy upstream config for nginx
+  copy:
+    src: files/vogon_upstream.conf
+    dest: /etc/nginx/conf.d/vogon_upstream.conf
+  become: yes
+- name: restart nginx
+  systemd:
+    state: restarted
+    name: nginx
+  become: yes

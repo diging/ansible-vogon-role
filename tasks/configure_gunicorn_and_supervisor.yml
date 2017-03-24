@@ -1,0 +1,42 @@
+- name: create gunicorn log file
+  file:
+    path: /var/opt/wsgi/vogon-web/logs/gunicorn_supervisor.log
+    state: touch
+    mode: "u=rw,g=rw,o=r"
+    owner: vogon-web
+    group: webapps
+  become: yes
+- name: copy gunicorn start script
+  copy:
+    src: files/gunicorn_start
+    dest: /var/opt/wsgi/vogon-web/bin/gunicorn_start
+    mode: "u=rwx,g=rx,o=rx"
+    owner: vogon-web
+    group: webapps
+  become: yes
+- name: copy celery start script
+  copy:
+    src: files/celery_start
+    dest: /var/opt/wsgi/vogon-web/bin/celery_start
+    mode: "u=rwx,g=rx,o=rx"
+    owner: vogon-web
+    group: webapps
+  become: yes
+- name: copy supervisord configuration for vogon-web
+  copy:
+    src: files/supervisord__vogon.conf
+    dest: /etc/supervisord.d/vogon.conf
+    mode: "u=rw,g=r,o=r"
+  become: yes
+- name: reread supervisor configuration
+  command: supervisorctl reread
+  become: yes
+- name: update supervisor with new configuration
+  command: supervisorctl update
+  become: yes
+- name: restart vogon-web gunicorn process
+  command: supervisorctl restart vogon-web
+  become: yes
+- name: restart vogon-web celery process
+  command: supervisorctl restart vogon-web-celery
+  become: yes
