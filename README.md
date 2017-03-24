@@ -1,6 +1,6 @@
-# Ansible role for Amphora on RHEL/CentOS 7
+# Ansible role for VogonWeb on RHEL/CentOS 7
 
-Deploys the Amphora repository webapp on a RHEL/CentOS 7 server via Gunicorn
+Deploys the VogonWeb app on a RHEL/CentOS 7 server via Gunicorn
 behind NginX.
 
 ## Requires
