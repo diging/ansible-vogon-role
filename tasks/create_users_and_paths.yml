@@ -25,14 +25,6 @@
     - logs
     - static
     - media
-- name: create media directory
-  file:
-    path: "{{ vogon-web_media_root }}"
-    state: directory
-    mode: "u=rwx,g=rwx,o="
-    owner: vogon-web
-    group: webapps
-  become: yes
 - name: allow nginx to read/write
   command: chcon -Rt httpd_sys_content_t /var/opt/wsgi/vogon-web
   become: yes

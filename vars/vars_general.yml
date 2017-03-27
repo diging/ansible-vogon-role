@@ -1,1 +1,3 @@
 giles_path: https://diging.asu.edu/geco-giles-staging
+quadriga_endpoint: https://diging.asu.edu/quadriga/rest/network
+conceptpower_endpoint: https://chps.asu.edu/conceptpower/rest/

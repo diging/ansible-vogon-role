@@ -10,15 +10,10 @@
     chdir: /var/opt/wsgi/vogon-web/vogon-web
   become: yes
   become_user: vogon-web
-- name: pre-populate schemas
-  shell: source /var/opt/wsgi/vogon-web/env_secrets && /var/opt/wsgi/vogon-web/env/bin/python manage.py load_schemas
-  args:
-    chdir: /var/opt/wsgi/vogon-web/vogon-web
-  become: yes
-  become_user: vogon-web
 - name: create superuser in vogon-web
-  shell: source /var/opt/wsgi/vogon-web/env_secrets && echo "from django.contrib.auth.models import User; User.objects.filter(email='{{ django_admin_email}}').count() < 1 and User.objects.create_superuser('{{ django_admin_user }}', '{{ django_admin_email }}', '{{ django_admin_password }}')" | /var/opt/wsgi/vogon-web/env/bin/python manage.py shell
+  shell: "source /var/opt/wsgi/vogon-web/env_secrets && echo \"from annotations.models import VogonUser; VogonUser.objects.filter(email='{{ django_admin_email}}').count() < 1 and VogonUser.objects.create(username='{{ django_admin_user }}', email='{{ django_admin_email }}', is_superuser=True) and (lambda u: u.set_password('{{ django_admin_password }}') and u.save())(VogonUser.objects.get(username='{{ django_admin_user }}'))\" | /var/opt/wsgi/vogon-web/env/bin/python manage.py shell"
   args:
     chdir: /var/opt/wsgi/vogon-web/vogon-web
   become: yes
   become_user: vogon-web
+  no_log: true

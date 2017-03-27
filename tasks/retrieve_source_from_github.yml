@@ -21,5 +21,6 @@
     repo: git://github.com/diging/vogon-web.git
     dest: /var/opt/wsgi/vogon-web/vogon-web
     force: yes
+    version: story/VGNWB-195
   become: yes
   become_user: vogon-web
