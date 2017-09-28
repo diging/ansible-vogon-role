@@ -22,6 +22,14 @@
     owner: vogon-web
     group: webapps
   become: yes
+- name: copy celery beat start script
+  copy:
+    src: files/celery_beat_start
+    dest: /var/opt/wsgi/vogon-web/bin/celery_beat_start
+    mode: "u=rwx,g=rx,o=rx"
+    owner: vogon-web
+    group: webapps
+  become: yes
 - name: copy supervisord configuration for vogon-web
   copy:
     src: files/supervisord__vogon.conf
@@ -39,4 +47,7 @@
   become: yes
 - name: restart vogon-web celery process
   command: supervisorctl restart vogon-web-celery
+  become: yes
+- name: restart vogon-web celery beat process
+  command: supervisorctl restart vogon-web-celery-beat
   become: yes

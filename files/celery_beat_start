@@ -20,4 +20,4 @@ export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
 export PYTHONPATH=$DJANGODIR:$PYTHONPATH
 
 
-exec ../env/bin/celery --beat --app=${DJANGO_CELERY_MODULE}:app worker --loglevel=INFO -P solo
+exec ../env/bin/celery --app=${DJANGO_CELERY_MODULE}:app beat --loglevel=INFO
